@@ -7,11 +7,11 @@ let pontuacao = 0;
 
 
 function carregarSonsImagens() {
-    
+
     imgTiro = new Image();
-    imgTiro.src = 'img/burracoTiro-20x21.png'; 
-    imgTiro.onload = () => console.log("Carregando Imagem do tiro");  
-    
+    imgTiro.src = 'img/burracoTiro-20x21.png';
+    imgTiro.onload = () => console.log("Carregando Imagem do tiro");
+
     somTiro = new Audio();
     somTiro.src = 'sound/tiroPistola.mp3';
     somTiro.load();
@@ -45,8 +45,10 @@ function atualizaCanvas() {
     //apenas sorteia posições que ficaram dentro da tela
     //30 é raio do circulo maior do alvo
     xAleatorio = sorteiaPosicao(30, canvas.width - 30);
-    yAleatorio = sorteiaPosicao(30, canvas.height - 30);
+    //desconsidera também a linha do painel = raio + painel + margem = 30 + 20 + 5;
+    yAleatorio = sorteiaPosicao(55, canvas.height - 30);
 
+    desenhaPainel(); 
     desenhaAlvo(xAleatorio, yAleatorio);
 }
 
@@ -61,20 +63,30 @@ function dispara(evento) {
     if ((x > xAleatorio - raio) && (x < xAleatorio + raio)
         && (y > yAleatorio - raio) && (y < yAleatorio + raio)) {
         pontuacao += 10;
-        console.log("Pontuação", pontuacao)
-
     }
 }
 
 function desenhaBurracoTiro(x, y) {
     //rebobina e dispara som do tiro
-    somTiro.currentTime = 0.0; 
-    somTiro.play(); 
+    somTiro.currentTime = 0.0;
+    somTiro.play();
 
     //centraliza o desenho que possui tamanho 20x21
-    context.drawImage(imgTiro, x-10, y-10); 
+    context.drawImage(imgTiro, x - 10, y - 10);
 }
 
-carregarSonsImagens(); 
+function desenhaPainel() {
+
+    context.save(); 
+    context.fillStyle = 'red'; 
+    context.strokeStyle = '#59280B'; 
+    context.font = "18px 'Luckiest Guy', cursive"; 
+    context.fillText(`Pontuação: ${pontuacao}`, 460, 20); 
+    context.strokeText(`Pontuação: ${pontuacao}`, 460, 20); 
+    context.restore(); 
+}
+
+
+carregarSonsImagens();
 setInterval(atualizaCanvas, 1500);
 canvas.onclick = dispara; 
