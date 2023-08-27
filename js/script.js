@@ -3,7 +3,7 @@ const context = canvas.getContext('2d');
 
 const raio = 10;
 let xAleatorio, yAleatorio, somTiro, imgTiro;
-let pontuacao = 0;
+let pontuacao = 0, ultimoCiclo = 0, decorrido = 0, velocidade = 1500;
 
 
 function carregarSonsImagens() {
@@ -41,15 +41,33 @@ function limpaCanvas() {
 }
 
 function atualizaCanvas() {
-    limpaCanvas();
-    //apenas sorteia posições que ficaram dentro da tela
-    //30 é raio do circulo maior do alvo
-    xAleatorio = sorteiaPosicao(30, canvas.width - 30);
-    //desconsidera também a linha do painel = raio + painel + margem = 30 + 20 + 5;
-    yAleatorio = sorteiaPosicao(55, canvas.height - 30);
 
-    desenhaPainel(); 
-    desenhaAlvo(xAleatorio, yAleatorio);
+    //Calcula o tempo decorrido entre os ciclos
+    let = agora = new Date().getTime();
+
+    if (ultimoCiclo == 0) {
+        ultimoCiclo = agora;
+    }
+
+    decorrido = agora - ultimoCiclo;
+
+    if (decorrido > velocidade) {
+
+        limpaCanvas();
+        //apenas sorteia posições que ficaram dentro da tela
+        //30 é raio do circulo maior do alvo
+        xAleatorio = sorteiaPosicao(30, canvas.width - 30);
+        //desconsidera também a linha do painel = raio + painel + margem = 30 + 20 + 5;
+        yAleatorio = sorteiaPosicao(55, canvas.height - 30);
+
+        desenhaPainel();
+        desenhaAlvo(xAleatorio, yAleatorio);
+
+        // Atualizar o instante do último ciclo
+        ultimoCiclo = agora;
+    }
+
+    requestAnimationFrame(atualizaCanvas);
 }
 
 function dispara(evento) {
@@ -77,16 +95,15 @@ function desenhaBurracoTiro(x, y) {
 
 function desenhaPainel() {
 
-    context.save(); 
-    context.fillStyle = 'red'; 
-    context.strokeStyle = '#59280B'; 
-    context.font = "18px 'Luckiest Guy', cursive"; 
-    context.fillText(`Pontuação: ${pontuacao}`, 460, 20); 
-    context.strokeText(`Pontuação: ${pontuacao}`, 460, 20); 
-    context.restore(); 
+    context.save();
+    context.fillStyle = 'red';
+    context.strokeStyle = '#59280B';
+    context.font = "18px 'Luckiest Guy', cursive";
+    context.fillText(`Pontuação: ${pontuacao}`, 460, 20);
+    context.strokeText(`Pontuação: ${pontuacao}`, 460, 20);
+    context.restore();
 }
 
-
 carregarSonsImagens();
-setInterval(atualizaCanvas, 1500);
+requestAnimationFrame(atualizaCanvas);
 canvas.onclick = dispara; 
