@@ -1,10 +1,11 @@
+const btnJogar = document.getElementById('btnJogar');
 const canvas = document.getElementById('game-board');
 const context = canvas.getContext('2d');
 
 const raio = 10;
 let xAleatorio, yAleatorio, somTiro, imgTiro;
 let pontuacao = 0, ultimoCiclo = 0, decorrido = 0, velocidade = 1500;
-
+let cronometro = 30, timer;
 
 function carregarSonsImagens() {
 
@@ -37,19 +38,30 @@ function sorteiaPosicao(minimo, maximo) {
 }
 
 function limpaCanvas() {
-    context.clearRect(0, 0, 600, 400);
+    context.clearRect(0, 30, 600, 400);
+}
+
+function limpaPainel() {
+    context.clearRect(0, 0, 600, 30);
 }
 
 function atualizaCanvas() {
 
     //Calcula o tempo decorrido entre os ciclos
-    let = agora = new Date().getTime();
-
+    let agora = new Date().getTime();
     if (ultimoCiclo == 0) {
         ultimoCiclo = agora;
     }
-
     decorrido = agora - ultimoCiclo;
+
+    limpaPainel();
+    desenhaPainel();
+
+    if (cronometro <= 0) {
+        clearInterval(timer);
+        gameOver();
+        return
+    }
 
     if (decorrido > velocidade) {
 
@@ -57,12 +69,10 @@ function atualizaCanvas() {
         //apenas sorteia posições que ficaram dentro da tela
         //30 é raio do circulo maior do alvo
         xAleatorio = sorteiaPosicao(30, canvas.width - 30);
-        //desconsidera também a linha do painel = raio + painel + margem = 30 + 20 + 5;
-        yAleatorio = sorteiaPosicao(55, canvas.height - 30);
+        //desconsidera também a linha do painel = raio + painel + margem = 30 + 20 + 10;
+        yAleatorio = sorteiaPosicao(60, canvas.height - 30);
 
-        desenhaPainel();
         desenhaAlvo(xAleatorio, yAleatorio);
-
         // Atualizar o instante do último ciclo
         ultimoCiclo = agora;
     }
@@ -101,9 +111,50 @@ function desenhaPainel() {
     context.font = "18px 'Luckiest Guy', cursive";
     context.fillText(`Pontuação: ${pontuacao}`, 460, 20);
     context.strokeText(`Pontuação: ${pontuacao}`, 460, 20);
+    context.fillText(`Tempo: ${cronometro}`, 300, 20);
+    context.strokeText(`Tempo: ${cronometro}`, 300, 20);
     context.restore();
 }
 
+function gameOver() {
+
+    limpaCanvas();
+
+    context.save();
+    context.fillStyle = 'red';
+    context.strokeStyle = '#59280B';
+    context.font = "70px 'Luckiest Guy', cursive";
+    context.fillText(`Game Over`, 100, 200);
+    context.strokeText(`Game Over`, 100, 200);
+    context.restore();
+
+    mostrarBotaoJogar();
+}
+
+function mostrarBotaoJogar() {
+    btnJogar.style.display = 'block';
+}
+
+function iniciarJogo() {
+    //redefine valor das variáveis
+    pontuacao = 0;
+    cronometro = 30;
+
+    iniciarCronometro();
+    canvas.onclick = dispara;
+
+    requestAnimationFrame(atualizaCanvas);
+}
+
+function iniciarCronometro() {
+    timer = setInterval(() => {
+        cronometro--;
+    }, 1000)
+}
+
 carregarSonsImagens();
-requestAnimationFrame(atualizaCanvas);
-canvas.onclick = dispara; 
+
+btnJogar.addEventListener('click', () => {
+    btnJogar.style.display = 'none';
+    iniciarJogo();
+})
