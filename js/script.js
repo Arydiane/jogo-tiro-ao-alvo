@@ -11,7 +11,6 @@ function carregarSonsImagens() {
 
     imgTiro = new Image();
     imgTiro.src = 'img/burracoTiro-20x21.png';
-    imgTiro.onload = () => console.log("Carregando Imagem do tiro");
 
     somTiro = new Audio();
     somTiro.src = 'sound/tiroPistola.mp3';
