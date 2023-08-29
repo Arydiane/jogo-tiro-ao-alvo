@@ -23,3 +23,5 @@ As tecnologias usadas foram:
 
 Para jogar, basta [clicar aqui](https://jogo-tiro-ao-alvo.vercel.app/) e desfrutar da experiência!
 Divirta-se!
+
+Créditos da imagem de fundo: <a href="https://br.freepik.com/vetores-gratis/peisage-de-um-campo-com-palheiros_10117293.htm">Imagem de frimufilms</a> no Freepik
