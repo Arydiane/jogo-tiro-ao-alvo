@@ -1,5 +1,68 @@
+:root {
+    --branco: #ffffff;
+    --marrom: #59280B; 
+    --vermelho: #ff0000; 
+    --cinza: #808080;
+    --bg-gradiente: linear-gradient(#A9BBBF,#EDE2C4, #F0C449);
+    --fonte-destaque: 'Luckiest Guy', cursive;
+}
+
 * {
     margin: 0;
     padding: 0; 
     box-sizing: border-box;
 }
+
+body {
+    background: var(--bg-gradiente);
+    color: var(--marrom);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+h1 {
+    font-family: var(--fonte-destaque); 
+    padding-bottom: 1rem;
+    font-size: 3rem;
+}
+
+#game-board {
+    border: 1px solid var(--cinza);
+    background: no-repeat url(../img/fundo-1600.jpg);
+    background-size: cover;
+    background-position: center;
+    cursor: crosshair;
+}
+
+#btnJogar {
+    background-color: var(--vermelho);
+    border: none;
+    border-radius: 40px;
+    color: var(--branco);
+    padding: 0.5rem 1rem;
+    font-family: var(--fonte-destaque); 
+    font-size: 1.5rem;
+    width: 150px;
+    position: absolute; 
+    top: 60%;
+    left: calc((100% - 150px) / 2);
+}
+
+#btnJogar:hover {
+    cursor: pointer;
+    box-shadow: 2px 2px 5px  var(--marrom);
+}
+
+footer {
+    margin-top: 1rem;
+}
+
+#legenda {
+    padding: 0.3rem;
+}
+
