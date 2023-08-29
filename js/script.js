@@ -117,6 +117,8 @@ function desenhaPainel() {
 
 function gameOver() {
 
+    canvas.onclick = null; 
+
     limpaCanvas();
 
     context.save();
